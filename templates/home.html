@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}home{% endblock %}
+
+{% block content %}
+
+<form class="pure-form pure-form-stacked" method="post" action="/people">
+    <fieldset>
+        <legend>A form to add a person to the database.</legend>
+
+        <label for="person">New Person's Name</label>
+        <input id="name-input" name="name" type="text" placeholder="New Name" required minlength="3">
+
+        <button type="submit" class="pure-button pure-button-primary">Add</button>
+    </fieldset>
+</form>
+
+
+{% endblock %}
