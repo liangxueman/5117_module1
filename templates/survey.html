@@ -22,13 +22,12 @@
 		<input id="new_name" name="new_name" type="text" placeholder="Mickey Mouse" required minlength="3">
 	</fieldset>
 
-	<fieldset class="pure-group">
-		<label class="pure-radio">2.If animal could talk, which of the following would be the rudest?
-			<input id="rudest_animal" name="rudest_animal" type="radio" value="tiger" checked>Tiger
-			<input id="rudest_animal" name="rudest_animal" type="radio" value="fish">Fish
-			<input id="rudest_animal" name="rudest_animal" type="radio" value="mosquito">Mosquito
-			<input id="rudest_animal" name="rudest_animal" type="radio" value="dinosaur">Dinosaur
-		</label>
+	<fieldset style="padding-bottom: 1em">
+		<label class="pure-radio">2.If animal could talk, which of the following would be the rudest?</label>
+			<input id="rudest_animal" name="rudest_animal" type="radio" value="tiger" checked> Tiger 
+			<input id="rudest_animal" name="rudest_animal" type="radio" value="fish"> Fish 
+			<input id="rudest_animal" name="rudest_animal" type="radio" value="mosquito"> Mosquito 
+			<input id="rudest_animal" name="rudest_animal" type="radio" value="dinosaur"> Dinosaur 
 	</fieldset>
 
 	<fieldset class="pure-group">
@@ -40,19 +39,21 @@
 		</select>
 	</fieldset>
 
-	<fieldset class="pure-group">
+<!-- 	<fieldset class="pure-group"> -->
 		<label class="pure-checkbox">
-			<input id="one_more" name="one_more" type="checkbox" value="yes">One more question please!
+			<input id="one_more" name="one_more" type="checkbox" value="yes"> One more question please!
 		</label>
 
 		<div class="extra_div" style="display: none">
 			<label>4.What is the closest thing to real magic?</label>
 			<textarea id="extra" name="extra" rows="3" cols="25"></textarea>
 		</div>
-	</fieldset>
+<!-- 	</fieldset> -->
 
 		<button type="submit" class="pure-button pure-button-primary">Next</button>
-	</fieldset>
 </form>
+
+
+
 
 {% endblock %}
