@@ -1,6 +1,5 @@
 import os
 import datetime
-import numpy as np
 
 from flask import Flask, jsonify, redirect, render_template, request, url_for
 import psycopg2
