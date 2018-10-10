@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}survey{% endblock %}
+
+{% block content %}
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".extra_div").hide();
+		$('input[name=one_more]').change(function() {
+			if($(this).is(':checked')) {
+				$(".extra_div").show();
+			} else {
+				$(".extra_div").hide();
+			}
+		});
+	});
+</script>
+
+<h1>Survey Page</h1>
+<form class="pure-form pure-form-stacked" id="dummy_form" method="post" action="/thanks">
+	<fieldset class="pure-group">
+		<label for="new_name">1.If you had to change your name, what would your new name be?</label>
+		<input id="new_name" name="new_name" type="text" placeholder="Mickey Mouse" required minlength="3">
+	</fieldset>
+
+	<fieldset class="pure-group">
+		<label class="pure-radio">2.If animal could talk, which of the following would be the rudest?
+			<input id="rudest_animal" name="rudest_animal" type="radio" value="tiger" checked>Tiger
+			<input id="rudest_animal" name="rudest_animal" type="radio" value="fish">Fish
+			<input id="rudest_animal" name="rudest_animal" type="radio" value="mosquito">Mosquito
+			<input id="rudest_animal" name="rudest_animal" type="radio" value="dinosaur">Dinosaur
+		</label>
+	</fieldset>
+
+	<fieldset class="pure-group">
+		<labe>3.Is hotdog a sandwich?</labe>
+		<select name="hotdog_sandwich" form="dummy_form">
+			<option value="yes">Yes</option>
+			<option value="no">No</option>
+			<option value="maybe">Maybe</option>
+		</select>
+	</fieldset>
+
+	<fieldset class="pure-group">
+		<label class="pure-checkbox">
+			<input id="one_more" name="one_more" type="checkbox" value="yes">One more question please!
+		</label>
+
+		<div class="extra_div" style="display: none">
+			<label>4.What is the closest thing to real magic?</label>
+			<textarea id="extra" name="extra" rows="3" cols="25"></textarea>
+		</div>
+	</fieldset>
+
+		<button type="submit" class="pure-button pure-button-primary">Next</button>
+	</fieldset>
+</form>
+
+{% endblock %}

@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+{% block title %}summary{% endblock %}
+
+{% block content %}
+<h1>Admin Summary Page</h1>
+<h2>Number of Survey Submits per Day</h2>
+<canvas id="time" width="200" height="100"></canvas>
+
+<h2>1.If you had to change your name, what would your new name be?</h2>
+<ul id="new_name"></ul>
+
+<h2>2.If animal could talk, which of the following would be the rudest?</h2>
+<canvas id="animal" width="200" height="100"></canvas>
+
+<h2>3.Is hotdog a sandwich?</h2>
+<canvas id="hotdog_sandwich" width="200" height="100"></canvas>
+
+<h2>One more question?</h2>
+<canvas id="one_more" width="200" height="100"></canvas>
+
+<h2>4.What is the closest thing to real magic?</h2>
+<ul id="magic"></ul>
+
+<script type="text/javascript">
+	var requestURL = '{{ link_api }}';
+	var request = new XMLHttpRequest();
+	request.open('GET', requestURL);
+	request.responseType = 'json';
+	request.onload = function() {
+		var response = request.response;
+		display(response);
+	};
+	request.send();
+
+	function display(json) {
+		var time_label = [];
+		var time_data = [];
+		var time_counter = -1;
+		var animal_tiger = 0;
+		var animal_fish = 0;
+		var animal_mosquito = 0;
+		var animal_dinosaur = 0;
+		var hotdog_yes = 0;
+		var hotdog_no = 0;
+		var hotdog_maybe = 0;
+		var one_more_yes = 0;
+		var one_more_no = 0;
+
+		for(var i=0; i<json.length; i++) {
+			var animal = json[i].rudest_animal;
+			var hotdog = json[i].hotdog_sandwich;
+			var one_more = json[i].one_more;
+			// time
+			var time = (json[i].time_submit).substring(0, 10);
+			console.log(time);
+			if(time_counter == -1||time!=time_label[time_counter]) {
+				time_counter++;
+				time_label[time_counter] = time;
+				time_data[time_counter] = 1;
+			} else {
+				time_data[time_counter]++;
+			}
+
+			// new name
+			var node = document.createElement("LI");
+			var textnode = document.createTextNode(json[i].new_name);
+			node.appendChild(textnode);
+			document.getElementById("new_name").appendChild(node);
+
+			// animal
+			if(animal == "tiger") {
+				animal_tiger++;
+			} else if(animal == "fish") {
+				animal_fish++;
+			} else if(animal == "mosquito") {
+				animal_mosquito++;
+			} else if(animal == "dinosaur"){
+				animal_dinosaur++;
+			}
+
+			// hotdog
+			if(hotdog == "yes") {
+				hotdog_yes++;
+			} else if(hotdog == "no") {
+				hotdog_no++;
+			} else {
+				hotdog_maybe++;
+			}
+
+			// one more question
+			if(one_more == "yes") {
+				one_more_yes++;
+			} else {
+				one_more_no++;
+			}
+
+			// new name
+			if(json[i].extra != " ") {
+				var node = document.createElement("LI");
+				var textnode = document.createTextNode(json[i].extra);
+				node.appendChild(textnode);
+				document.getElementById("magic").appendChild(node);
+			}
+		}
+
+		var ctx = document.getElementById('time');
+		var myLineChart = new Chart(ctx, {
+			type: 'bar',
+			data: {
+				labels: time_label,
+				datasets: [{
+					label: 'Summary of Number of Survey Submits per Day',
+					data: time_data,
+					type: 'line',
+					pointRadius: 0,
+					fill: false,
+					lineTension: 0,
+					borderWidth: 2
+				}]
+			},
+			options: {
+				scales: {
+					xAxes: [{
+						distribution: 'series',
+						ticks: {
+							source: 'labels'
+						}
+					}],
+					yAxes: [{
+						scaleLabel: {
+							display: true,
+							labelString: 'Number of Survey Submits'
+						}
+					}]
+				}
+			}
+		});
+
+		var ctx = document.getElementById("animal");
+		var myChart = new Chart(ctx, {
+	    type: 'bar',
+	    data: {
+	    	labels: ["Tiger", "Fish", "Mosquito", "Dinosaur"],
+	    	datasets: [{
+	    		label: 'Number of Votes Received',
+	    		data: [animal_tiger, animal_fish, animal_mosquito, animal_dinosaur],
+	    		backgroundColor: [
+	    			'rgba(255, 99, 132, 0.2)',
+	    			'rgba(54, 162, 235, 0.2)',
+	    			'rgba(255, 206, 86, 0.2)',
+	    			'rgba(75, 192, 192, 0.2)'
+	    		],
+	    		borderColor: [
+	    			'rgba(255,99,132,1)',
+	    			'rgba(54, 162, 235, 1)',
+	    			'rgba(255, 206, 86, 1)',
+	    			'rgba(75, 192, 192, 1)'
+	    		],
+	    		borderWidth: 1
+	    	}]
+	    },
+	    options: {
+		  	scales: {
+		  		yAxes: [{
+		  			ticks: {
+		  				beginAtZero:true
+		  			}
+		  		}]
+		  	}
+		  }
+	  });
+
+		var ctx = document.getElementById("hotdog_sandwich");
+	  var myChart = new Chart(ctx, {
+		  type: 'bar',
+		  data: {
+		  	labels: ["Yes", "No", "Maybe"],
+		  	datasets: [{
+		  		label: 'Number of Votes Received',
+		  		data: [hotdog_yes, hotdog_no, hotdog_maybe],
+		  		backgroundColor: [
+		  			'rgba(153, 102, 255, 0.2)',
+		  			'rgba(255, 206, 86, 0.2)',
+		  			'rgba(255, 159, 64, 0.2)'
+		  		],
+		  		borderColor: [
+		  			'rgba(153, 102, 255, 1)',
+		  			'rgba(255, 206, 86, 1)',
+		  			'rgba(255, 159, 64, 1)'
+		  		],
+		  		borderWidth: 1
+		  	}]
+		  },
+		  options: {
+		  	scales: {
+		  		yAxes: [{
+		  			ticks: {
+		  				beginAtZero:true
+		  			}
+		  		}]
+		  	}
+		  }
+		});
+
+	  var ctx = document.getElementById("one_more");
+		var myChart = new Chart(ctx, {
+	    type: 'bar',
+	    data: {
+	    	labels: ["Yes, please", "Nooo, enough questions"],
+	    	datasets: [{
+	    		label: 'Number of Votes Received',
+	    		data: [one_more_yes, one_more_no],
+	    		backgroundColor: [
+	    			'rgba(153, 102, 255, 0.2)',
+	    			'rgba(255, 159, 64, 0.2)'
+	    		],
+	    		borderColor: [
+	    			'rgba(153, 102, 255, 1)',
+	    			'rgba(255, 159, 64, 1)'
+	    		],
+	    		borderWidth: 1
+	    	}]
+	    },
+	    options: {
+		  	scales: {
+		  		yAxes: [{
+		  			ticks: {
+		  				beginAtZero:true
+		  			}
+		  		}]
+		  	}
+		  }
+	  });
+	}
+</script>
+
+{% endblock %}
